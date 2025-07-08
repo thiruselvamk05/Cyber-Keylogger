@@ -47,6 +47,46 @@ python keylogger_with_gui.py
 
 4️⃣ Use the GUI to start, stop, and send logs manually.
 
+
+
+💻 Steps to run the full project
+
+✅ 1️⃣ Install Python dependencies
+Open Command Prompt or PowerShell inside your project folder and run:
+bash
+pip install -r requirements.txt
+
+✅ 2️⃣ Generate your encryption key (only once)
+Run this command once to create secret.key:
+bash
+python encrypt_util.py
+
+➡️ This will create a file:
+C:\Users\user\Desktop\keylogger_project\secret.key
+
+✅ 3️⃣ Start the keylogger GUI
+bash
+python keylogger_with_gui.py
+
+✅ 4️⃣ Use the GUI
+When the window opens:
+✅ Click Start Logger → It will start logging keystrokes, clipboard, screenshots, and auto email logs.
+
+🟥 Click Stop Logger → It will stop all logging.
+
+📧 Click Send Log Now → It will manually email your current log.txt.
+
+
+
+📂 Output files
+Encrypted keystrokes: logs/log.txt
+
+Screenshots: screenshots/
+
+Encryption key: secret.key (⚠️ Keep private)
+
+
+
 📂 Folder Structure
 
 keylogger_project/
