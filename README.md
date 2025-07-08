@@ -2,6 +2,8 @@
   
   This project is a Python-based keylogger tool designed strictly for educational and cybersecurity awareness purposes.
 
+
+
 ⚙️ Features
 ✅ Graphical User Interface (GUI) with Start and Stop buttons
 
@@ -16,9 +18,13 @@
 ✅ Manual "Send Log Now" button for immediate email testing
 
 
+
+
 🚨 Ethical Disclaimer
 This tool is intended only for educational testing and self-research on your own devices.
 ⚠️ Unauthorized use on others' systems without consent is illegal and unethical.
+
+
 
 
 💡 Learning Objectives
@@ -29,6 +35,8 @@ Learn about encryption of sensitive logs
 Explore periodic automated data exfiltration via email
 
 Gain awareness of security risks and countermeasures
+
+
 
 
 🛠 Setup & Usage
@@ -78,12 +86,15 @@ When the window opens:
 
 
 
+
 📂 Output files
 Encrypted keystrokes: logs/log.txt
 
 Screenshots: screenshots/
 
 Encryption key: secret.key (⚠️ Keep private)
+
+
 
 
 
